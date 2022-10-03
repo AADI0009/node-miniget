@@ -59,10 +59,10 @@ Miniget.MinigetError = class MinigetError extends Error {
 };
 
 Miniget.defaultOptions = {
-  maxRedirects: 10,
+  maxRedirects: 4,
   maxRetries: 2,
   maxReconnects: 0,
-  backoff: { inc: 100, max: 10000 },
+  backoff: { inc: 100, max: 1000 },
 };
 
 function Miniget(url: string | URL, options: Miniget.Options = {}): Miniget.Stream {
@@ -102,7 +102,7 @@ function Miniget(url: string | URL, options: Miniget.Options = {}): Miniget.Stre
 
   const reconnect = (err?: Miniget.MinigetError) => {
     activeDecodedStream = null;
-    retries = 0;
+    retries = 1;
     let inc = opts.backoff.inc;
     let ms = Math.min(inc, opts.backoff.max);
     retryTimeout = setTimeout(doDownload, ms);
